@@ -18,5 +18,5 @@ variable "aws_region" {
 }
 
 variable "aws_keypair" {
-  default = "my-kp-demo1"
+  default = "my-kp-s3c"
 }

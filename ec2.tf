@@ -13,15 +13,6 @@ resource "aws_instance" "practice_ec2" {
   }
 }
 
-provider "aws" {
-  region = var.aws_region
-}
-
-resource "aws_s3_bucket" "practice_bucket" {
-  bucket = "bhargav-practice-bucket-12345"   # must be globally unique
-  acl    = "private"
-}
-
 variable "aws_region" {
   default = "ap-south-1"
 }

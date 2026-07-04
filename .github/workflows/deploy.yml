@@ -1,12 +1,10 @@
-name: AWS Deploy
+name: Test AWS Connection
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:   # lets you run manually from the Actions tab
 
 jobs:
-  deploy:
+  test-aws:
     runs-on: ubuntu-latest
 
     steps:

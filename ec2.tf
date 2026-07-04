@@ -12,6 +12,9 @@ resource "aws_instance" "practice_ec2" {
     Name = "PracticeEC2"
   }
 }
+resource "aws_s3_bucket" "my-bucket" {
+  bucket = "my-fist-s3-bucket-21"
+}
 
 variable "aws_region" {
   default = "ap-south-1"

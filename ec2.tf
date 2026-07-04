@@ -19,7 +19,6 @@ provider "aws" {
 
 resource "aws_s3_bucket" "practice_bucket" {
   bucket = "bhargav-practice-bucket-12345"   # must be globally unique
-  acl    = "private"
 }
 
 variable "aws_region" {
@@ -27,5 +26,5 @@ variable "aws_region" {
 }
 
 variable "aws_keypair" {
-  default = "my-kp-demo1"
+  default = "my-kp-s3c"
 }

@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "my-bucket" {
 }
 
 variable "aws_region" {
-  default = "ap-south-1"
+  default = "ap-south-2"
 }
 
 variable "aws_keypair" {

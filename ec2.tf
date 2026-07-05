@@ -16,7 +16,7 @@ resource "aws_instance" "practice_ec2" {
   ami           = "ami-0ffa797f35095b9f7"   # Amazon Linux 2 AMI for ap-south-1
   instance_type = "t3.micro"
   key_name = var.aws_keypair
-  subnet_id     = aws_subnet.my-subnet
+  subnet_id     = aws_subnet.my-subnet.id
 
   tags = {
     Name = "PracticeEC2"

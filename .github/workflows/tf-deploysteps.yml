@@ -1,0 +1,55 @@
+name: Terraform Workflow
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  terraform-plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan (save output)
+        run: terraform plan -no-color -out=plan.out
+
+      - name: Extract Summary
+        id: summary
+        run: |
+          echo "PLAN_SUMMARY=$(terraform show -no-color plan.out | grep 'Plan:')" >> $GITHUB_ENV
+
+      - name: Comment Plan Summary on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Terraform Plan Summary
+            ```
+            ${{ env.PLAN_SUMMARY }}
+            ```
+
+  terraform-apply:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve

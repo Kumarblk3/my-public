@@ -14,7 +14,7 @@ resource "aws_instance" "practice_ec2" {
 }
 
 variable "aws_region" {
-  default = "ap-south-1"
+  default = "ap-south-2"
 }
 
 variable "aws_keypair" {

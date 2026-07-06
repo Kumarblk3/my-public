@@ -1,14 +1,12 @@
-name: Terraform Workflow
+name: Terraform Plan
 
 on:
   pull_request:
-    branches: [ main ]
-  push:
-    branches: [ main ]
+    branches:
+      - '**'   # run plan on all branches
 
 jobs:
   terraform-plan:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,12 +16,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend=false
 
-      - name: Terraform Plan (save output)
-        run: terraform plan -no-color -out=plan.out
+      - name: Terraform Validate
+        run: terraform validate
 
-      - name: Extract Summary
+      - name: Terraform Plan
+        run: terraform plan -no-color -input=false -out=plan.out
+
+      - name: Extract Plan Summary
         id: summary
         run: |
           echo "PLAN_SUMMARY=$(terraform show -no-color plan.out | grep 'Plan:')" >> $GITHUB_ENV
@@ -37,19 +38,3 @@ jobs:
             ```
             ${{ env.PLAN_SUMMARY }}
             ```
-
-  terraform-apply:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve

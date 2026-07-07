@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - main   # Fires on squash merges (pushes to main)
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main   # Fires when PRs are closed/merged into main
   workflow_dispatch: 
 
 permissions:

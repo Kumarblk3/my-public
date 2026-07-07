@@ -24,7 +24,7 @@ resource "aws_instance" "practice_ec2" {
 }
 
 /*resource "aws_s3_bucket" "practice_bucket" {
- # bucket = "practice-s3-bucket-12"   # must be globally unique
+  bucket = "practice-s3-bucket-12"   # must be globally unique
 }*/
 
 variable "aws_region" {

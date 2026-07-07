@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   apply:
-    if: github.event.pull_request.merged == true   # Run only if the PR was merged (not just closed)
+    if: github.event_name == 'push'   # Run on push
     runs-on: ubuntu-latest
     environment:
       name: deploy   # Configure reviewers in Settings → Environments

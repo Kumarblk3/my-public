@@ -3,22 +3,36 @@ name: Terraform Apply
 on:
   push:
     branches:
-      - main   # apply only after merge to main
+      - main   # Apply only after merge to main
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
 
 jobs:
-  terraform-apply:
+  apply:
     runs-on: ubuntu-latest
     environment:
-      name: deploy
+      name: deploy   # Configure reviewers in GitHub → Settings → Environments
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5   # Pin version for consistency
 
-      - name: Terraform Init
+      - name: Initialize Terraform
         run: terraform init
 
-      - name: Terraform Apply
+      - name: Apply Terraform
         run: terraform apply -auto-approve

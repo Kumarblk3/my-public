@@ -1,9 +1,11 @@
 name: Terraform Apply
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - main   # Apply only after merge to main
+      - main   # Only when PRs are merged into main
 
 permissions:
   contents: read
@@ -12,9 +14,10 @@ permissions:
 
 jobs:
   apply:
+    if: github.event.pull_request.merged == true   # Run only if the PR was merged (not just closed)
     runs-on: ubuntu-latest
     environment:
-      name: deploy   # Configure reviewers in GitHub → Settings → Environments
+      name: deploy   # Configure reviewers in Settings → Environments
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
